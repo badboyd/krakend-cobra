@@ -17,6 +17,10 @@ type Executor func(config.ServiceConfig)
 func Execute(configParser config.Parser, f Executor) {
 	parser = configParser
 	run = f
+	eulas = make([]bool, len(EulaFlags))
+	for i, eula := range EulaFlags {
+		runCmd.PersistentFlags().BoolVarP(&eulas[i], eula.FlagLong, eula.FlagShort, false, eula.Description)
+	}
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(-1)

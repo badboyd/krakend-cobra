@@ -57,10 +57,6 @@ func init() {
 
 	rootCmd.AddCommand(runCmd)
 	runCmd.PersistentFlags().IntVarP(&port, "port", "p", 0, "Listening port for the http service")
-	eulas = make([]bool, len(EulaFlags))
-	for i, eula := range EulaFlags {
-		runCmd.PersistentFlags().BoolVarP(&eulas[i], eula.FlagLong, eula.FlagShort, false, eula.Description)
-	}
 }
 
 type EULA struct {
