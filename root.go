@@ -16,6 +16,8 @@ var (
 	checkGinRoutes bool
 	parser         config.Parser
 	run            func(config.ServiceConfig)
+	EulaFlags      = []EULA{}
+	eulas          []bool
 
 	rootCmd = &cobra.Command{
 		Use:   "krakend",
@@ -55,6 +57,17 @@ func init() {
 
 	rootCmd.AddCommand(runCmd)
 	runCmd.PersistentFlags().IntVarP(&port, "port", "p", 0, "Listening port for the http service")
+	eulas = make([]bool, len(EulaFlags))
+	for i, eula := range EulaFlags {
+		runCmd.PersistentFlags().BoolVarP(&eulas[i], eula.FlagLong, eula.FlagShort, false, eula.Description)
+	}
+}
+
+type EULA struct {
+	FlagShort    string
+	FlagLong     string
+	Description  string
+	ErrorMessage string
 }
 
 const encodedLogo = "ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCmA3TU1GJyBgWU1NJyAgICAgICAgICAgICAgICAgIGA3TU0gICAgICAgICAgICAgICAgICAgICAgICAgYDdNTSIiIlliLiAgIAogIE1NICAgLk0nICAgICAgICAgICAgICAgICAgICAgIE1NICAgICAgICAgICAgICAgICAgICAgICAgICAgTU0gICAgYFliLiAKICBNTSAuZCIgICAgIGA3TWIsb2Q4ICw2IlliLiAgICBNTSAgLE1QJy5nUCJZYSBgN01NcE1NTWIuICAgIE1NICAgICBgTWIgCiAgTU1NTU0uICAgICAgIE1NJyAiJzgpICAgTU0gICAgTU0gO1kgICxNJyAgIFliICBNTSAgICBNTSAgICBNTSAgICAgIE1NIAogIE1NICBWTUEgICAgICBNTSAgICAgLHBtOU1NICAgIE1NO01tICA4TSIiIiIiIiAgTU0gICAgTU0gICAgTU0gICAgICxNUCAKICBNTSAgIGBNTS4gICAgTU0gICAgOE0gICBNTSAgICBNTSBgTWIuWU0uICAgICwgIE1NICAgIE1NICAgIE1NICAgICxkUCcgCi5KTU1MLiAgIE1NYi4uSk1NTC4gIGBNb285XllvLi5KTU1MLiBZQS5gTWJtbWQnLkpNTUwgIEpNTUwuLkpNTW1tbWRQJyAgIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAK"

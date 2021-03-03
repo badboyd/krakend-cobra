@@ -7,6 +7,14 @@ import (
 )
 
 func runFunc(cmd *cobra.Command, args []string) {
+	if len(EulaFlags) != 0 {
+		for i, v := range eulas {
+			if !v {
+				cmd.Println(EulaFlags[i].ErrorMessage)
+				return
+			}
+		}
+	}
 	if cfgFile == "" {
 		cmd.Println("Please, provide the path to your config file")
 		return
